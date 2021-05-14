@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.divulgatudo.dto.AnuncioDTO;
 import br.com.divulgatudo.service.AnuncioService;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/v1/anuncios")
@@ -21,7 +22,8 @@ public class AnuncioController {
 	@Autowired
 	private AnuncioService anuncioService;
 	
-	@GetMapping
+	@ApiOperation(value = "Retorna uma lista de Anúncios conforme o filtro de pesquisa")
+	@GetMapping(produces = "application/json")
 	public ResponseEntity<List<AnuncioDTO>> search (
 			@RequestParam(name = "clienteId", required = false) Long clienteId,
 			@RequestParam(name = "dataInicio", required = false) 

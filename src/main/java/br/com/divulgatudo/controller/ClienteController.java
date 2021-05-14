@@ -20,6 +20,7 @@ import br.com.divulgatudo.dto.ClienteDTO;
 import br.com.divulgatudo.dto.ClienteNewDTO;
 import br.com.divulgatudo.model.Cliente;
 import br.com.divulgatudo.service.ClienteService;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/v1/clientes")
@@ -31,20 +32,23 @@ public class ClienteController {
 	@Autowired
 	private ModelMapper mapper;
 	
-	@PostMapping
+	@ApiOperation(value = "Cadastra um novo cliente")
+	@PostMapping(produces = "application/json", consumes = "application/json")
 	public ResponseEntity<ClienteDTO> save(@Valid @RequestBody ClienteNewDTO clienteNewDto) {
 		ClienteDTO clienteDto = mapper.map(this.clienteService.save(clienteNewDto), ClienteDTO.class);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(clienteDto.getId()).toUri();
 		return ResponseEntity.created(uri).body(clienteDto);
 	}
 	
-	@GetMapping("/{id}")
+	@ApiOperation(value = "Retorna um Cliente pelo ID")
+	@GetMapping(value = "/{id}", produces = "application/json")
 	public ResponseEntity<ClienteDTO> findById(@PathVariable Long id) {
 		Cliente cliente = this.clienteService.findById(id);
 		return ResponseEntity.ok(mapper.map(cliente, ClienteDTO.class));
 	}
 	
-	@GetMapping
+	@ApiOperation(value = "Retorna uma lista de Clientes")
+	@GetMapping(produces = "application/json")
 	public ResponseEntity<List<ClienteDTO>> findAll() {
 		List<ClienteDTO> clientesDto = this.clienteService.findAll();
 		return ResponseEntity.ok(clientesDto);

@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import br.com.divulgatudo.dto.AnuncioDTO;
+import br.com.divulgatudo.dto.AnuncioNewDTO;
 import br.com.divulgatudo.model.Anuncio;
 import br.com.divulgatudo.model.Cliente;
 import br.com.divulgatudo.repository.AnuncioRepository;
@@ -47,5 +48,10 @@ public class AnuncioService {
 		return anuncios.stream().map( 
 				anuncio -> mapper.map(anuncio, AnuncioDTO.class)).collect(Collectors.toList());
 		
+	}
+
+	public Anuncio save(AnuncioNewDTO anuncioNewDto) {
+		Anuncio anuncio = mapper.map(anuncioNewDto, Anuncio.class);
+		return this.anuncioRepository.save(anuncio);
 	}
 }
